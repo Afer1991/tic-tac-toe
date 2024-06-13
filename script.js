@@ -1,5 +1,22 @@
-const gameBoard = {
-  board: [["","",""], ["","",""], ["","",""]]
+function gameBoard() {
+  const board = [];
+
+  for (let i = 0; i < 3; i++) {
+    board.push([]);
+    for (let j = 0; j < 3; j++) {
+      board[i].push("");
+    }
+  }
+
+  const getBoard = () => board;
+
+  const addToken = (row, column, token) => {
+    board[row][column] = token;
+  };
+
+  const printBoard = () => console.log(board);
+
+  return { getBoard, printBoard, addToken };
 };
 
 const players = [
@@ -24,3 +41,5 @@ const playRound = (row, column) => {
   console.log(gameBoard.board);
   switchPlayerTurn();
 };
+
+const newGameBoard = gameBoard();
