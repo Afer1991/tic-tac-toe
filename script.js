@@ -8,38 +8,44 @@ function gameBoard() {
     }
   }
 
-  const getBoard = () => board;
-
   const addToken = (row, column, token) => {
     board[row][column] = token;
   };
 
-  const printBoard = () => console.log(board);
+  const displayBoard = () => console.log(board);
 
-  return { getBoard, printBoard, addToken };
+  return { displayBoard, addToken };
 };
 
-const players = [
-  {
-   name: "Player One",
-   token: "X"
-  },
-  {
-    name: "Player Two",
-    token: "O"
-  }
-];
+function gameController() {
+  const board = gameBoard();
 
-let activePlayer = players[0];
+  const players = [
+    {
+     name: "Player One",
+     token: "X"
+    },
+    {
+      name: "Player Two",
+      token: "O"
+    }
+  ];
+  
+  let currentPlayer = players[0];
+  
+  const switchTurns = () => {
+    currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
+  };
+  
+  const getCurrentPlayer = () => currentPlayer;
 
-const switchPlayerTurn = () => {
-  activePlayer = activePlayer === players[0] ? players[1] : players[0];
+  const playRound = (row, column) => {
+    board.addToken(row, column, getCurrentPlayer().token);
+    board.displayBoard();
+    switchTurns();
+  };
+
+  return { playRound };
 };
 
-const playRound = (row, column) => {
-  gameBoard.board[row][column] = activePlayer.token;
-  console.log(gameBoard.board);
-  switchPlayerTurn();
-};
-
-const newGameBoard = gameBoard();
+const newGame = gameController();
