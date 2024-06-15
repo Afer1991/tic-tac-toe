@@ -8,13 +8,15 @@ function gameBoard() {
     }
   }
 
+  const getBoard = () => board;
+
   const addToken = (row, column, token) => {
     board[row][column] = token;
   };
 
   const displayBoard = () => console.log(board);
 
-  return { displayBoard, addToken };
+  return { getBoard, displayBoard, addToken };
 };
 
 function gameController() {
@@ -84,12 +86,16 @@ function gameController() {
   const playRound = (row, column) => {
     board.addToken(row, column, getCurrentPlayer().token);
     board.displayBoard();
-    switchTurns();
+    if (ckForWin(board.getBoard(), getCurrentPlayer().token)) {
+      console.log(`${getCurrentPlayer().name} has won!`);
+    } else if (ckForTie(board.getBoard() === 9)) {
+      console.log("It's a tie");
+    } else {
+      switchTurns();
+    }
   };
 
   return { playRound };
 };
 
 const newGame = gameController();
-
-
