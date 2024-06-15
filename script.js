@@ -88,7 +88,7 @@ function gameController() {
     board.displayBoard();
     if (ckForWin(board.getBoard(), getCurrentPlayer().token)) {
       console.log(`${getCurrentPlayer().name} has won!`);
-    } else if (ckForTie(board.getBoard() === 9)) {
+    } else if (ckForTie(board.getBoard()) === 9) {
       console.log("It's a tie");
     } else {
       switchTurns();
