@@ -1,3 +1,8 @@
+const dialog = document.querySelector("dialog");
+const form = document.querySelector("form");
+const plyr1 = document.getElementById("player-one");
+const plyr2 = document.getElementById("player-two");
+
 function gameBoard() {
   const board = [];
 
@@ -19,16 +24,16 @@ function gameBoard() {
   return { getBoard, displayBoard, addToken };
 };
 
-function gameController() {
+function gameController(playerOne = "Player One", playerTwo = "Player Two") {
   const board = gameBoard();
 
   const players = [
     {
-     name: "Player One",
+     name: playerOne,
      token: "X"
     },
     {
-      name: "Player Two",
+      name: playerTwo,
       token: "O"
     }
   ];
@@ -95,7 +100,36 @@ function gameController() {
     }
   };
 
-  return { playRound };
+  return { playRound, players, getBoard: board.getBoard };
 };
 
-const newGame = gameController();
+function screenController() {
+  const game = gameController(plyr1.value, plyr2.value);
+  const playerOneDiv = document.querySelector(".player-one-data");
+  const playerTwoDiv = document.querySelector(".player-two-data");
+  const boardDiv = document.querySelector(".board");
+
+  playerOneDiv.innerText = `${game.players[0].name} ${game.players[0].token}`;
+  playerTwoDiv.innerText = `${game.players[1].name} ${game.players[1].token}`;
+
+  const board = game.getBoard();
+  for (let i = 0; i < board.length; i++) {
+    const row = document.createElement("div");
+    row.classList.add("row");
+    boardDiv.appendChild(row);
+    for (let j = 0; j < board[i].length; j++) {
+      const cell = document.createElement("div");
+      row.appendChild(cell);
+      cell.classList.add("cell");
+    }
+  }
+  console.log(board);
+};
+
+dialog.showModal();
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  screenController();
+  dialog.close();
+});
