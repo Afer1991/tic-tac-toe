@@ -4,19 +4,12 @@ const plyr1 = document.getElementById("player-one");
 const plyr2 = document.getElementById("player-two");
 
 function gameBoard() {
-  const board = [];
-
-  for (let i = 0; i < 3; i++) {
-    board.push([]);
-    for (let j = 0; j < 3; j++) {
-      board[i].push("");
-    }
-  }
+  const board = ["", "", "", "", "", "", "", "", ""];
 
   const getBoard = () => board;
 
-  const addToken = (row, column, token) => {
-    board[row][column] = token;
+  const addToken = (slot, token) => {
+    board[slot] = token;
   };
 
   const displayBoard = () => console.log(board);
@@ -50,12 +43,10 @@ function gameController(playerOne = "Player One", playerTwo = "Player Two") {
     let resultsStr = "";
   
     for (let i = 0; i < arr.length; i++) {
-      for (let j = 0; j < arr[i].length; j++) {
-        if (arr[i][j] === token ) {
-          resultsStr = resultsStr.concat("1");
-        } else {
-          resultsStr = resultsStr.concat("0");
-        }
+      if (arr[i] === token ) {
+        resultsStr = resultsStr.concat("1");
+      } else {
+        resultsStr = resultsStr.concat("0");
       }
     }
     
@@ -79,17 +70,15 @@ function gameController(playerOne = "Player One", playerTwo = "Player Two") {
     let tieStr = 0;
   
     for (let i = 0; i < arr.length; i++) {
-      for (let j = 0; j < arr[i].length; j++) {
-        if (arr[i][j] !== "") {
-          tieStr++;
-        }
+      if (arr[i] !== "") {
+        tieStr++;
       }
     }
     return tieStr;
   }
 
-  const playRound = (row, column) => {
-    board.addToken(row, column, getCurrentPlayer().token);
+  const playRound = (slot) => {
+    board.addToken(slot, getCurrentPlayer().token);
     board.displayBoard();
     if (ckForWin(board.getBoard(), getCurrentPlayer().token)) {
       console.log(`${getCurrentPlayer().name} has won!`);
@@ -113,17 +102,19 @@ function screenController() {
   playerTwoDiv.innerText = `${game.players[1].name} ${game.players[1].token}`;
 
   const board = game.getBoard();
+
   for (let i = 0; i < board.length; i++) {
-    const row = document.createElement("div");
-    row.classList.add("row");
-    boardDiv.appendChild(row);
-    for (let j = 0; j < board[i].length; j++) {
-      const cell = document.createElement("div");
-      row.appendChild(cell);
-      cell.classList.add("cell");
-    }
+    const cell = document.createElement("div");
+    cell.classList.add("cell");
+    boardDiv.appendChild(cell);
+    cell.addEventListener("click", () => {
+      if(board[i] === "") {
+        game.playRound(`${i}`);
+      }
+    });
   }
-  console.log(board);
+
+  
 };
 
 dialog.showModal();
