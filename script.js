@@ -1,5 +1,6 @@
 const dialog = document.querySelector("dialog");
 const form = document.querySelector("form");
+const boardContainer = document.querySelector(".board-container");
 const plyr1 = document.getElementById("player-one");
 const plyr2 = document.getElementById("player-two");
 
@@ -12,9 +13,7 @@ function gameBoard() {
     board[slot] = token;
   };
 
-  const displayBoard = () => console.log(board);
-
-  return { getBoard, displayBoard, addToken };
+  return { getBoard, addToken };
 };
 
 function gameController(playerOne = "Player One", playerTwo = "Player Two") {
@@ -79,7 +78,6 @@ function gameController(playerOne = "Player One", playerTwo = "Player Two") {
 
   const playRound = (slot) => {
     board.addToken(slot, getCurrentPlayer().token);
-    board.displayBoard();
   };
 
   return { playRound, players, getCurrentPlayer, getBoard: board.getBoard, ckForWin, ckForTie, switchTurns };
@@ -154,6 +152,27 @@ function screenController() {
     });
   }
 
+  const restart = () => {
+    while (boardContainer.hasChildNodes()) {
+      boardContainer.removeChild(boardContainer.firstChild);
+    }
+
+    const turnDiv = document.createElement("div");
+    turnDiv.classList.add("turn");
+    boardContainer.appendChild(turnDiv);
+
+    const boardDiv = document.createElement("div");
+    boardDiv.classList.add("board");
+    boardContainer.appendChild(boardDiv);
+
+    const btnDiv = document.createElement("div");
+    btnDiv.classList.add("button-container");
+    boardContainer.appendChild(btnDiv);
+
+    dialog.showModal();
+  };
+
+  btn.onclick = restart;
 };
 
 dialog.showModal();
