@@ -22,7 +22,7 @@ dialog {
   transform: translate(-50%, -50%);
 }
 
-.board-container {
+.turn {
   padding-top: 200px;
 }
 

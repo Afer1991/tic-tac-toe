@@ -80,37 +80,72 @@ function gameController(playerOne = "Player One", playerTwo = "Player Two") {
   const playRound = (slot) => {
     board.addToken(slot, getCurrentPlayer().token);
     board.displayBoard();
-    if (ckForWin(board.getBoard(), getCurrentPlayer().token)) {
-      console.log(`${getCurrentPlayer().name} has won!`);
-    } else if (ckForTie(board.getBoard()) === 9) {
-      console.log("It's a tie");
-    } else {
-      switchTurns();
-    }
   };
 
-  return { playRound, players, getBoard: board.getBoard };
+  return { playRound, players, getCurrentPlayer, getBoard: board.getBoard, ckForWin, ckForTie, switchTurns };
 };
 
 function screenController() {
   const game = gameController(plyr1.value, plyr2.value);
-  const playerOneDiv = document.querySelector(".player-one-data");
-  const playerTwoDiv = document.querySelector(".player-two-data");
   const boardDiv = document.querySelector(".board");
+  const turnDiv = document.querySelector(".turn");
 
-  playerOneDiv.innerText = `${game.players[0].name} ${game.players[0].token}`;
-  playerTwoDiv.innerText = `${game.players[1].name} ${game.players[1].token}`;
+  turnDiv.innerText = `${game.getCurrentPlayer().name}'s turn`;
 
   const board = game.getBoard();
+
+  const playRound = (slot) => {
+    if (board[slot] === "") {
+      game.playRound(slot);
+
+      const cell = document.getElementById(slot);
+      cell.innerText = board[slot];
+      
+      if (game.ckForWin(board, game.getCurrentPlayer().token)) {
+        turnDiv.innerText = `${game.getCurrentPlayer().name} has won!`;
+
+        while (boardDiv.hasChildNodes()) {
+          boardDiv.removeChild(boardDiv.firstChild);
+        }
+
+        for (let i = 0; i < board.length; i++) {
+          const cell = document.createElement("div");
+          cell.classList.add("cell");
+          cell.setAttribute("id", `${i}`);
+          boardDiv.appendChild(cell);
+          cell.innerText = board[i];
+        }
+
+      } else if (game.ckForTie(board) === 9) {
+        turnDiv.innerText = "It's a tie";
+
+        while (boardDiv.hasChildNodes()) {
+          boardDiv.removeChild(boardDiv.firstChild);
+        }
+
+        for (let i = 0; i < board.length; i++) {
+          const cell = document.createElement("div");
+          cell.classList.add("cell");
+          cell.setAttribute("id", `${i}`);
+          boardDiv.appendChild(cell);
+          cell.innerText = board[i];
+        }
+
+      } else {
+        turnDiv.innerText = `${game.getCurrentPlayer() === game.players[0] ? game.players[1].name : game.players[0].name}'s turn`;
+      }
+      
+      game.switchTurns();
+    }
+  };
 
   for (let i = 0; i < board.length; i++) {
     const cell = document.createElement("div");
     cell.classList.add("cell");
+    cell.setAttribute("id", `${i}`);
     boardDiv.appendChild(cell);
     cell.addEventListener("click", () => {
-      if(board[i] === "") {
-        game.playRound(`${i}`);
-      }
+      playRound(`${i}`);
     });
   }
 
@@ -124,3 +159,11 @@ form.addEventListener("submit", (event) => {
   screenController();
   dialog.close();
 });
+
+/**if (ckForWin(board.getBoard(), getCurrentPlayer().token)) {
+      console.log(`${getCurrentPlayer().name} has won!`);
+    } else if (ckForTie(board.getBoard()) === 9) {
+      console.log("It's a tie");
+    } else {
+      switchTurns();
+    } **/
