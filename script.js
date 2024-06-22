@@ -154,7 +154,6 @@ function screenController() {
     });
   }
 
-  return { game };
 };
 
 dialog.showModal();
