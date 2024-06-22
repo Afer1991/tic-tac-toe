@@ -89,8 +89,13 @@ function screenController() {
   const game = gameController(plyr1.value, plyr2.value);
   const boardDiv = document.querySelector(".board");
   const turnDiv = document.querySelector(".turn");
+  const btnDiv = document.querySelector(".button-container");
 
   turnDiv.innerText = `${game.getCurrentPlayer().name}'s turn`;
+
+  const btn = document.createElement("button");
+  btnDiv.appendChild(btn);
+  btn.innerText = "Restart";
 
   const board = game.getBoard();
 
@@ -149,7 +154,7 @@ function screenController() {
     });
   }
 
-  
+  return { game };
 };
 
 dialog.showModal();
@@ -159,11 +164,3 @@ form.addEventListener("submit", (event) => {
   screenController();
   dialog.close();
 });
-
-/**if (ckForWin(board.getBoard(), getCurrentPlayer().token)) {
-      console.log(`${getCurrentPlayer().name} has won!`);
-    } else if (ckForTie(board.getBoard()) === 9) {
-      console.log("It's a tie");
-    } else {
-      switchTurns();
-    } **/
