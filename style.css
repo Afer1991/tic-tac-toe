@@ -3,25 +3,33 @@
   padding: 0;
 }
 
+:root {
+  --header: #222222;
+  --background: #FFFFFF;
+  --button: #FEEA00;
+}
+
 html {
   font-family: "Permanent Marker";
 }
 
 body {
   height: 100vh;
+  background: var(--background);
 }
 
 .header {
   width: 100%;
   text-align: center;
   position: fixed;
-  background: #FFF;
+  background: var(--header);
   box-shadow: 0px 2px 5px #bbbbbb;
 }
 
 h1 {
   padding: 20px 0;
   font-size: 4rem;
+  color: var(--background);
 }
 
 dialog {
@@ -59,6 +67,8 @@ button {
   font-family: "Permanent Marker";
   border-radius: 8px;
   cursor: pointer;
+  background: var(--button);
+  color: var(--header);
 }
 
 .board-container {
@@ -83,11 +93,16 @@ button {
 }
 
 .cell {
- border: 2px solid black;
+ border: 2px solid #222222;
  display: flex;
  justify-content: center;
  align-items: center;
  font-size: 5rem;
+ background: var(--background);
+}
+
+.cell:hover {
+  filter: brightness(92.5%);
 }
 
 .button-container {
